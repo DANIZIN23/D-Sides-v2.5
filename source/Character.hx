@@ -121,8 +121,7 @@ class Character extends FlxSprite
 
 				var rawJson:Null<String> = null;
 				try{
-				#if MODS_ALLOWED
-					var rawJson = File.getContent(path);
+				
 				
 
 
