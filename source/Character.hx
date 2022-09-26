@@ -121,8 +121,20 @@ class Character extends FlxSprite
 
 				var rawJson:Null<String> = null;
 				try{
-				
-				
+				#if MODS_ALLOWED
+					var rawJson = File.getContent(path);
+				#else
+				var rawJson = Assets.getText(path);
+				#end
+			}catch(e:Any){
+				trace(e);
+			}
+				if(rawJson==null && Assets.exists(path))rawJson = Assets.getText(path);
+				trace(Assets.exists(path), path);
+				if(rawJson==null){
+					path = Paths.getPreloadPath('characters/' + DEFAULT_CHARACTER + '.json');
+					rawJson = File.getContent(path);
+				}
 
 
 
@@ -260,11 +272,10 @@ class Character extends FlxSprite
 					var oldMiss = animation.getByName('singRIGHTmiss').frames;
 					animation.getByName('singRIGHTmiss').frames = animation.getByName('singLEFTmiss').frames;
 					animation.getByName('singLEFTmiss').frames = oldMiss;
-				
-			
-			
-		
-	
+				}
+			}*/
+		}
+	}
 
 	override function update(elapsed:Float)
 	{
