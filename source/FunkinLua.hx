@@ -66,8 +66,11 @@ class FunkinLua {
 		var result:Dynamic = LuaL.dofile(lua, script);
 		var resultStr:String = Lua.tostring(lua, result);
 		if(resultStr != null && result != 0) {
+			#if windows
 			lime.app.Application.current.window.alert(resultStr, 'Error on .LUA script!');
+			#else
 			trace('Error on .LUA script! ' + resultStr);
+			#end
 			lua = null;
 			return;
 		}
@@ -1199,7 +1202,7 @@ class FunkinLua {
 			if(!FileSystem.exists(path)) {
 				path = Paths.json(Paths.formatToSongPath(PlayState.SONG.song) + '/' + dialogueFile);
 			}
-			luaTrace('Trying to load dialogue: ' + path);
+			luaTrace('Trying to load dialogue: ' + path = SUtil.getPath() +
 
 			if(FileSystem.exists(path)) {
 				var shit:DialogueFile = DialogueBoxPsych.parseDialogue(path);
