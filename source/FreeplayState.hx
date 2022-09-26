@@ -194,7 +194,11 @@ class FreeplayState extends MusicBeatState
 		#else
 		var size:Int = 18;
 		#end
-		super.create();
+		#if android
+		addVirtualPad(NONE, A_B);	
+                #end
+		
+			super.create();
 	}
 
 	override function closeSubState() {
