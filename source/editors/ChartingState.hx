@@ -380,11 +380,12 @@ class ChartingState extends MusicBeatState
 		add(zoomTxt);
 
 		updateGrid();
-		#if android
+
+        #if android
 		addVirtualPad(FULL, A_B);
-		#end	
-		
-			super.create();
+		#end
+
+		super.create();
 	}
 
 	var check_mute_inst:FlxUICheckBox = null;
@@ -437,7 +438,7 @@ class ChartingState extends MusicBeatState
 		{
 			var songName:String = Paths.formatToSongPath(_song.song);
 			var file:String = Paths.json(songName + '/events');
-			#if MODS_ALLOWED
+			#if sys
 			if (#if MODS_ALLOWED FileSystem.exists(Paths.modsJson(songName + '/events')) || #end FileSystem.exists(file))
 			#else
 			if (OpenFlAssets.exists(file))
@@ -1583,7 +1584,7 @@ class ChartingState extends MusicBeatState
 				autosaveSong();
 				LoadingState.loadAndSwitchState(new editors.EditorPlayState(sectionStartTime()));
 			}
-			if (FlxG.keys.justPressed.ENTER#if android || _virtualpad.buttonA.justPressed #end)
+			if (FlxG.keys.justPressed.ENTER #if android || _virtualpad.buttonA.justPressed #end)
 			{
 				autosaveSong();
 				FlxG.mouse.visible = false;
@@ -1608,7 +1609,7 @@ class ChartingState extends MusicBeatState
 			}
 
 
-			if (FlxG.keys.justPressed.BACKSPACE#if android || _virtualpad.buttonB.justPressed #end) {
+			if (FlxG.keys.justPressed.BACKSPACE #if android || _virtualpad.buttonB.justPressed #end) {
 				//if(onMasterEditor) {
 					MusicBeatState.switchState(new editors.MasterEditorMenu());
 					FlxG.sound.playMusic(Paths.music('freakyMenu'));
@@ -2719,11 +2720,15 @@ class ChartingState extends MusicBeatState
 
 		if ((data != null) && (data.length > 0))
 		{
+		        #if android
+                        SUtil.saveContent(Paths.formatToSongPath(_song.song), ".json", data.trim());
+                        #else
 			_file = new FileReference();
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 			_file.save(data.trim(), Paths.formatToSongPath(_song.song) + ".json");
+			#end
 		}
 	}
 
