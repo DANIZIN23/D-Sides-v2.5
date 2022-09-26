@@ -260,10 +260,11 @@ class Character extends FlxSprite
 					var oldMiss = animation.getByName('singRIGHTmiss').frames;
 					animation.getByName('singRIGHTmiss').frames = animation.getByName('singLEFTmiss').frames;
 					animation.getByName('singLEFTmiss').frames = oldMiss;
-				}
-			}*/
-		}
-	}
+				
+			
+			
+		
+	
 
 	override function update(elapsed:Float)
 	{
