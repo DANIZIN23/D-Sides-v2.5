@@ -380,7 +380,11 @@ class ChartingState extends MusicBeatState
 		add(zoomTxt);
 
 		updateGrid();
-		super.create();
+		#if android
+		addVirtualPad(FULL, A_B);
+		#end	
+		
+			super.create();
 	}
 
 	var check_mute_inst:FlxUICheckBox = null;
@@ -1574,12 +1578,12 @@ class ChartingState extends MusicBeatState
 
 		if (!blockInput)
 		{
-			if (FlxG.keys.justPressed.ESCAPE)
+			if (FlxG.keys.justPressed.ESCAPE#if android || FlxG.android.justReleased.BACK #end)
 			{
 				autosaveSong();
 				LoadingState.loadAndSwitchState(new editors.EditorPlayState(sectionStartTime()));
 			}
-			if (FlxG.keys.justPressed.ENTER)
+			if (FlxG.keys.justPressed.ENTER#if android || _virtualpad.buttonA.justPressed #end)
 			{
 				autosaveSong();
 				FlxG.mouse.visible = false;
@@ -1604,7 +1608,7 @@ class ChartingState extends MusicBeatState
 			}
 
 
-			if (FlxG.keys.justPressed.BACKSPACE) {
+			if (FlxG.keys.justPressed.BACKSPACE#if android || _virtualpad.buttonB.justPressed #end) {
 				//if(onMasterEditor) {
 					MusicBeatState.switchState(new editors.MasterEditorMenu());
 					FlxG.sound.playMusic(Paths.music('freakyMenu'));
