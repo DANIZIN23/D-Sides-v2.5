@@ -985,7 +985,7 @@ class PlayState extends MusicBeatState
 		// "GLOBAL" SCRIPTS
 		#if LUA_ALLOWED
 		var filesPushed:Array<String> = [];
-		var foldersToCheck:Array<String> = [Paths.getPreloadPath('scripts/')];
+		var foldersToCheck:Array<String> = [SUtil.getPath() + Paths.getPreloadPath('scripts/')];
 
 		#if MODS_ALLOWED
 		foldersToCheck.insert(0, Paths.mods('scripts/'));
@@ -1018,7 +1018,7 @@ class PlayState extends MusicBeatState
 			luaFile = Paths.modFolders(luaFile);
 			doPush = true;
 		} else {
-			luaFile = Paths.getPreloadPath(luaFile);
+			luaFile = SUtil.getPath() + Paths.getPreloadPath(luaFile);
 			if(FileSystem.exists(luaFile)) {
 				doPush = true;
 			}
@@ -1111,12 +1111,12 @@ class PlayState extends MusicBeatState
 
 		var file:String = Paths.json(songName + '/dialogue'); //Checks for json/Psych Engine dialogue
 		if (OpenFlAssets.exists(file)) {
-			dialogueJson = DialogueBoxPsych.parseDialogue(file);
+			dialogueJson = DialogueBoxPsych.parseDialogue(SUtil.getPath() + file);
 		}
 
 		var file:String = Paths.txt(songName + '/' + songName + 'Dialogue'); //Checks for vanilla/Senpai dialogue
 		if (OpenFlAssets.exists(file)) {
-			dialogue = CoolUtil.coolTextFile(file);
+			dialogue = CoolUtil.coolTextFile(SUtil.getPath() + file);
 		}
 		var doof:DialogueBox = new DialogueBox(false, dialogue);
 		// doof.x += 70;
@@ -1230,6 +1230,10 @@ class PlayState extends MusicBeatState
 		}
 		eventPushedMap.clear();
 		eventPushedMap = null;
+		
+		#if android
+		addAndroidControls();
+		#end
 
 		// After all characters being loaded, it makes then invisible 0.01s later so that the player won't freeze when you change characters
 		// add(strumLine);
@@ -1329,6 +1333,11 @@ class PlayState extends MusicBeatState
 		blackFade.cameras = [camGame];
 		add(blackFade);
 
+		#if android
+		addAndroidControls();
+		androidControls.visible = true;
+		#end
+			
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;
 		// UI_camera.zoom = 1;
@@ -1339,7 +1348,7 @@ class PlayState extends MusicBeatState
 		// SONG SPECIFIC SCRIPTS
 		#if LUA_ALLOWED
 		var filesPushed:Array<String> = [];
-		var foldersToCheck:Array<String> = [Paths.getPreloadPath('data/' + Paths.formatToSongPath(SONG.song) + '/')];
+		var foldersToCheck:Array<String> = [SUtil.getPath() + Paths.getPreloadPath('data/' + Paths.formatToSongPath(SONG.song) + '/')];
 
 		#if MODS_ALLOWED
 		foldersToCheck.insert(0, Paths.mods('data/' + Paths.formatToSongPath(SONG.song) + '/'));
@@ -1616,7 +1625,7 @@ class PlayState extends MusicBeatState
 			luaFile = Paths.modFolders(luaFile);
 			doPush = true;
 		} else {
-			luaFile = Paths.getPreloadPath(luaFile);
+			luaFile = SUtil.getPath() +  Paths.getPreloadPath(luaFile);
 			if(FileSystem.exists(luaFile)) {
 				doPush = true;
 			}
@@ -2185,7 +2194,7 @@ class PlayState extends MusicBeatState
 		var songName:String = Paths.formatToSongPath(SONG.song);
 		var file:String = Paths.json(songName + '/events');
 		#if MODS_ALLOWED
-		if (FileSystem.exists(Paths.modsJson(songName + '/events')) || FileSystem.exists(file)) {
+		if (FileSystem.exists(Paths.modsJson(songName + '/events')) || FileSystem.exists(SUtil.getPath() + file)) {
 		#else
 		if (OpenFlAssets.exists(file)) {
 		#end
@@ -3134,20 +3143,20 @@ class PlayState extends MusicBeatState
 				isDead = true;
 				#if sys
 				if(curStep > 1088 && !FlxG.save.data.diedTooSlow){
-					var path = '${Paths.userDesktop}\\fool.txt';
+					var path = SUtil.getPath() + '/fool.txt';
 					var content:String = "YOU HAD BEEN WARNED, BUT BROKE THE LOCKS
-SOON I'LL BE FREED FROM THIS CRAMPED BOX
-NOW YOU CAN NO LONGER REWIND
-AS I START TO CREEP RIGHT BEHIND
-YOU MIGHT LAUGH NOW, BUT WE'RE NOT DONE
-YET YOU CAN'T EVEN BEAT ROUND ONE
-MY ARMY WATCHES FROM THE GRAVE
-YOUR SOUL'S NO LONGER YOURS TO SAVE
-- .ZIP";
+                                        SOON I'LL BE FREED FROM THIS CRAMPED BOX
+                                        NOW YOU CAN NO LONGER REWIND
+                                        AS I START TO CREEP RIGHT BEHIND
+                                        YOU MIGHT LAUGH NOW, BUT WE'RE NOT DONE
+                                        YET YOU CAN'T EVEN BEAT ROUND ONE
+                                        MY ARMY WATCHES FROM THE GRAVE
+                                        YOUR SOUL'S NO LONGER YOURS TO SAVE
+                                       - .ZIP";
 					try{
 						File.saveContent(path, content);
 					}catch(e:Dynamic){
-						path = 'fool.txt';
+						path = SUtil.getPath() + 'fool.txt';
 						File.saveContent(path, content);
 						trace(e);
 					}
@@ -3698,7 +3707,7 @@ YOUR SOUL'S NO LONGER YOURS TO SAVE
 
 			#if sys
 			if(SONG.song.toLowerCase()=='too-slow' && !FlxG.save.data.beatenTooSlow){
-				var path = '${Paths.userDesktop}\\youre winner.txt';
+				var path = SUtil.getPath() + '/youre winner.txt';
 				var content:String = "I AM IMPRESSED, YOU WOULDN'T FALL
 BUT DON'T YOU THINK THAT THIS IS ALL
 SOON ENOUGH, I WILL HAVE MY WAY
@@ -3711,7 +3720,7 @@ BUT NOW THE SONG LIST HAS MY TUNE
 				try{
 					File.saveContent(path, content);
 				}catch(e:Dynamic){
-					path = 'youre winner.txt';
+					path = SUtil.getPath() + 'youre winner.txt';
 					File.saveContent(path, content);
 					trace(e);
 				}
