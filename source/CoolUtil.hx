@@ -71,7 +71,7 @@ class CoolUtil
 	{
 		var daList:Array<String> = [];
 		#if MODS_ALLOWED
-		if(FileSystem.exists(path)) daList = SUtil.getPath() + File.getContent(path).trim().split('\n');
+		if(FileSystem.exists(path)) daList = File.getContent(path).trim().split('\n');
 		#else
 		if(Assets.exists(path)) daList = SUtil.getPath() + Assets.getText(path).trim().split('\n');
 		#end
