@@ -70,10 +70,10 @@ class CoolUtil
 	public static function coolTextFile(path:String):Array<String>
 	{
 		var daList:Array<String> = [];
-		#if windows 
-		if(FileSystem.exists(path)) daList = File.getContent(path).trim().split('\n');
+		#if MODS_ALLOWED
+		if(FileSystem.exists(path)) daList = SUtil.getPath() + File.getContent(path).trim().split('\n');
 		#else
-		if(Assets.exists(path)) daList = Assets.getText(path).trim().split('\n');
+		if(Assets.exists(path)) daList = SUtil.getPath() + Assets.getText(path).trim().split('\n');
 		#end
 
 		for (i in 0...daList.length)
